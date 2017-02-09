@@ -1,0 +1,5 @@
+Google, by itself, is a company with extremely high standards, so obviously they took great care in designing their logo.
+
+One might wonder, why a triangle? What does it have to do with documentation, word processing, and data storage?
+
+Google Drive, as you know, has 3 primary services: Docs, Sheets, and Slides (basically free, clean versions of Microsoft Word, Excel, and PowerPoint).
