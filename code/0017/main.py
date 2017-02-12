@@ -8,19 +8,18 @@ tree = etree.ElementTree(etree.Element("xml-tree"));
 excel = xlrd.open_workbook("./student.xls");
 sheet = excel.sheet_by_name("student");
 
-attr = {}
 
 for row in range(sheet.nrows):
+    attr = {}
 
-    for col in range(1, sheet.ncols):
+    for col in range(sheet.ncols):
         if sheet.cell(row, col).value != None and type(sheet.cell(row, col).value) == float:
             attr[col] = str(int(sheet.cell(row, col).value))
-        if sheet.cell(row, col).value != None and type(sheet.cell(row, col).value) == str:
+        elif sheet.cell(row, col).value != None and type(sheet.cell(row, col).value) == str:
             attr[col] = sheet.cell(row, col).value
 
-    #print(attr)
     sub = etree.SubElement(tree.getroot(), "student", name=sheet.cell(row, 0).value)
-    sub.text = json.dumps(attr)
+    sub.text = json.dumps(attr, ensure_ascii=False)
 
 etree.dump(tree.getroot())
 

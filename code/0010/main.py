@@ -7,7 +7,13 @@ import random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
-from create_code import cr_200_code
+
+def create_verify():
+    st= 'qwertyuiopasdfghjklzxcvbnm0123456789'
+    verify = ''
+    for i in range(4):
+        verify += random.choice(st)
+    return verify
 
 def create_background():
     data = np.zeros((128,512,3), dtype=np.uint8)
@@ -53,9 +59,8 @@ def add_code(im, code):
 '''
 run
 '''
+code = create_verify()
 bg = create_background()
-code = cr_200_code()[123]
 verify = add_code(bg, code)
 noise_img = add_noise(verify)
-#noise_img = (verify)
 noise_img.show()

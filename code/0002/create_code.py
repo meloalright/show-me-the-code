@@ -1,4 +1,3 @@
-#main.py
 import uuid
 import random
 
