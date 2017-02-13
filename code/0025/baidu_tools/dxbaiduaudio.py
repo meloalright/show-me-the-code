@@ -6,10 +6,16 @@ import wave
 import pycurl
 import io
 
-#melo的微博
-bda_app_id = "9271146"
-bda_api_key = "OGnSaG5CXm46jORUkxylquWd"
-bda_secret_key = "dbc1368d5e12d4bdeb22bc4029963872"
+#百度开放平台
+client_id = 'jhxXtlvzv2A9FVPk4Zion0hT'
+
+client_secret = 'UivRhZbUBPGuiR1nVsHalMQMMM10S10K'
+
+
+#语音
+bda_app_id = "9271468"
+bda_api_key = "jhxXtlvzv2A9FVPk4Zion0hT"
+bda_secret_key = "UivRhZbUBPGuiR1nVsHalMQMMM10S10K"
 
 bda_access_token = ""
 bda_expires_in = ""
@@ -19,7 +25,7 @@ def get_mac_address():
     return uuid.UUID(int=uuid.getnode()).hex[-12:]
 
 def get_access_token():
-    url = "https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id=ZrjLfF5Rh7pOL66gaOmDGnXn&client_secret=16bac9645093ca2632ebb81015ff7544"
+    url = "https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id=" + client_id + "&client_secret=" + client_secret
 
     req = request.Request(url, method="POST")
     resp = request.urlopen(req)

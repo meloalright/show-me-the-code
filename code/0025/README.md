@@ -5,13 +5,22 @@
 `调用百度语音识别接口成功后 => 浏览器会自动打开https://google.com.hk`
 
 ```python
-#melo的微博-[python-demo-melo]
+#百度开发者平台-[python-oauth]
 
-App ID: 9271146
+ID: 9271468
 
-API Key: OGnSaG5CXm46jORUkxylquWd
+API Key: jhxXtlvzv2A9FVPk4Zion0hT
 
-Secret Key: dbc1368d5e12d4bdeb22bc4029963872
+Secret Key: UivRhZbUBPGuiR1nVsHalMQMMM10S10K
+
+
+#语音-[python-oauth]
+
+App ID: 9271468
+
+API Key: jhxXtlvzv2A9FVPk4Zion0hT
+
+Secret Key: UivRhZbUBPGuiR1nVsHalMQMMM10S10K
 
 ```
 
@@ -24,3 +33,6 @@ request api ing...
 
 {'sn': '197061159531486965239', 'corpus_no': '6386467072560171530', 'result': ['谷歌地图ａｐｉ，'], 'err_no': 0, 'err_msg': 'success.'}
 ```
+   
+
+[百度语音开放平台](http://yuyin.baidu.com/)
