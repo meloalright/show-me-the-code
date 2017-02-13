@@ -7,7 +7,7 @@
 
 import wave, pyaudio
 from datetime import datetime
-#from tools import dxbaiduaudio
+from baidu_tools import dxbaiduaudio
 import webbrowser
 
 CHUNK = 1024
@@ -63,22 +63,21 @@ def browser_open_text(text):
     if text is None:
         return
 
-    #url = "http://www.baidu.com"
     if text.startswith("谷歌") or text.startswith("google"):
-        url = "http://www.google.com"
+        url = "https://www.google.com.hk"
     elif text.startswith("必应") or text.startswith("bing"):
-        url = "http://cn.bing.com"
+        url = "https://cn.bing.com"
+    elif text.startswith("百度") or text.startswith("baidu"):
+        url = "https://baidu.com"
     else:
-    	url = text
+    	url = "https://sogou.com"
+
     webbrowser.open_new_tab(url)
 
 if __name__ == "__main__":
     to_dir = "./"
     file_path = record_wave(to_dir)
 
-    #text = dxbaiduaudio.wav_to_text(file_path)
-
+    text = dxbaiduaudio.wav_to_text(file_path)
     
-    #music 163
-    text = 'http://111.206.239.17/m10.music.126.net/20170213005454/98343106b0ee010d306c7e7318158841/ymusic/c616/8b9a/b36e/462068068920634b2dfd5bccc0a01dab.mp3?wshc_tag=1&wsts_tag=58a08d82&wsid_tag=6fc2cf70&wsiphost=ipdbm'
     browser_open_text(text)
