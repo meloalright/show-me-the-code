@@ -1,9 +1,9 @@
 ##相对导入   
-    
+
 `0005任务的resize函数依然可以复用`    
 `本任务用于练习相对导入知识点`    
 
-```python
+```shell   
 (-)0022
     (-)A
         __init__.py
@@ -15,7 +15,9 @@
     __init__.py
     main.py
     sth.py
-
+```
+   
+```python
 >>> python3 main.py
 #from A import func
 [main.py]从[A]中导入[func.py]
