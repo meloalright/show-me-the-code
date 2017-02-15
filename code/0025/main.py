@@ -5,6 +5,13 @@
 # brew install portaudio
 # pip install pyaudio
 
+'''
+===raspberry pi====
+>> python3
+> sudo apt-get install python3-pyaudio
+> sudo apt-get install python3-pycurl
+=======
+'''
 import wave, pyaudio
 from datetime import datetime
 from baidu_tools import dxbaiduaudio
