@@ -19,7 +19,6 @@ class MainHandler(tornado.web.RequestHandler):
 
 k = 0
 class MessageHandler(tornado.web.RequestHandler):
-
     def post(self):
         return self.write({'msg':['ok'], 'len': 1})
     @tornado.gen.coroutine
@@ -27,10 +26,11 @@ class MessageHandler(tornado.web.RequestHandler):
         global k
         self.future = Future()
         k += 1
+        self.future.set_result({'msg': k})
         messages = yield self.future
         if self.request.connection.stream.closed():
             return
-        self.write(dict(messages=messages))
+        self.write(messages)
 
 def make_app():
     return tornado.web.Application([
