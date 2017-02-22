@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tornado message</title>
+</head>
+<body>
+        {% for message in messages %}
+          {% module Template("message.html", message=message) %}
+        {% end %}
+</body>
+</html>
