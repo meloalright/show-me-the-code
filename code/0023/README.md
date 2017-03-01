@@ -2,15 +2,17 @@
    
 ```shell
 >>> /usr/local/Cellar/mongodb/3.4.2/bin/mongod
->>>
 ```
       
 ```shell
 >>> python3 main.py
 ```
    
-`access http://10.0.119.120:8002/`   
-`阻塞`   
+   
+   
+   
+   
+`access http://10.0.119.120:8002/ == 阻塞`   
 ```shell   
 starting fetch index
 end fetch index
@@ -23,8 +25,11 @@ end fetch index
 [I 170301 11:05:32 web:1946] 200 GET / (10.0.120.100) 2.52ms
 ```
    
-`access http://10.0.119.120:8002/fetch-weather/`   
-`非阻塞`   
+   
+   
+   
+   
+`access http://10.0.119.120:8002/fetch-weather/ == 非阻塞`   
 ```shell   
 starting fetch weather
 starting fetch weather
