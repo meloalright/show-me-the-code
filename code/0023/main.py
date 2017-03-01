@@ -17,6 +17,7 @@ import pymongo
 
 define("port", default=8002, help="run on the given port", type=int)
 
+
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
@@ -26,10 +27,9 @@ class Application(tornado.web.Application):
         (r"/submit/", SubmitHandler),
         (r"/clear/", ClearHandler),
         ]
-
         settings = dict(
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
-        static_path=os.path.join(os.path.dirname(__file__), "static"),
+        static_path=os.path.join(os.path.dirname(__file__), "templates/static"),
         debug=True,
         )
 
@@ -38,6 +38,11 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, handlers, **settings)
 
 class MainHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     def get(self):
         '''
         start
@@ -52,6 +57,11 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 class FetchWeatherHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     @tornado.gen.coroutine
     def get(self):
         '''
@@ -83,14 +93,25 @@ class FetchWeatherHandler(tornado.web.RequestHandler):
 
 
 class FetchHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     def get(self):
         coll = self.application.db.demo
         find = coll.find()
         arr = [{'name': i['name'], 'comment': i['comment']} for i in find]
-        print(arr)
+        #翻转
+        arr.reverse()
         return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': arr}))
 
 class SubmitHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     def post(self):
         coll = self.application.db.demo
         obj = {
@@ -101,6 +122,11 @@ class SubmitHandler(tornado.web.RequestHandler):
         return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
 
 class ClearHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     def get(self):
         self.application.db.drop_collection('demo') 
         return self.write(json.dumps({'code': 200, 'msg': 'cleared'}))

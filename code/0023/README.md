@@ -1,6 +1,25 @@
 #0023-tornado+mongo实现留言板   
    
 ```shell
+vue部分dev方法
+>>> cd my-project
+>>> npm install
+>>> npm run dev
+```   
+   
+```shell
+vue部分build方法
+>>> cd my-project
+>>> npm run build
+```   
+   
+```shell
+迁移静态文件shell
+>>> ./mv.sh
+```
+         
+```shell
+开启mongo
 >>> /usr/local/Cellar/mongodb/3.4.2/bin/mongod
 ```
       
