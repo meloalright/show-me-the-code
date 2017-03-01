@@ -12,8 +12,7 @@
    
    
    
-###访问 /
-###阻塞   
+###访问 / = 阻塞
 ```shell   
 starting fetch index
 end fetch index
@@ -30,8 +29,7 @@ end fetch index
    
    
    
-###访问 /fetch-weather/
-###非阻塞   
+###访问 /fetch-weather/ = 非阻塞   
 ```shell   
 starting fetch weather
 starting fetch weather
