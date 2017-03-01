@@ -6,7 +6,9 @@ import tornado.escape
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
+import tornado.httpclient
 import tornado.web
+import tornado.gen
 from tornado.options import define, options
 
 import json
@@ -20,6 +22,7 @@ class Application(tornado.web.Application):
         handlers = [
         (r"/", MainHandler),
         (r"/fetch/", FetchHandler),
+        (r"/fetch-weather/", FetchWeatherHandler),
         (r"/submit/", SubmitHandler),
         (r"/clear/", ClearHandler),
         ]
@@ -36,13 +39,54 @@ class Application(tornado.web.Application):
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        '''
+        start
+        '''
+        print('starting fetch index')
+        '''
+        end
+        '''
+        print('end fetch index')
         self.render("index.html")
+
+
+
+class FetchWeatherHandler(tornado.web.RequestHandler):
+    @tornado.gen.coroutine
+    def get(self):
+        '''
+        start
+        '''
+        print('starting fetch weather')
+        '''
+        start
+        '''
+        http_client = tornado.httpclient.AsyncHTTPClient()
+        response = yield http_client.fetch("http://api.jirengu.com/weather.php")
+        '''
+         @ tornado.escape.json_decode
+        '''
+        data = tornado.escape.json_decode(response.body)
+        weather_dict = {
+            'city': data['results'][0]['currentCity'],
+            'pm25': data['results'][0]['pm25']
+        }
+        '''
+        end
+        '''
+        print('end fetch weather')
+        '''
+        end
+        '''
+        return self.write(weather_dict)
+
 
 
 class FetchHandler(tornado.web.RequestHandler):
     def get(self):
         coll = self.application.db.demo
-        arr = [{'name': i['name'], 'comment': i['comment']} for i in coll.find()]
+        find = coll.find()
+        arr = [{'name': i['name'], 'comment': i['comment']} for i in find]
         print(arr)
         return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': arr}))
 
@@ -57,7 +101,7 @@ class SubmitHandler(tornado.web.RequestHandler):
         return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
 
 class ClearHandler(tornado.web.RequestHandler):
-    def post(self):
+    def get(self):
         self.application.db.drop_collection('demo') 
         return self.write(json.dumps({'code': 200, 'msg': 'cleared'}))
 
