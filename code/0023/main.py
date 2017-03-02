@@ -9,6 +9,7 @@ import tornado.options
 import tornado.httpclient
 import tornado.web
 import tornado.gen
+import datetime
 from tornado.options import define, options
 
 import json
@@ -101,7 +102,7 @@ class FetchHandler(tornado.web.RequestHandler):
     def get(self):
         coll = self.application.db.demo
         find = coll.find()
-        arr = [{'name': i['name'], 'comment': i['comment']} for i in find]
+        arr = [{'name': i['name'], 'comment': i['comment'], 'time': i['time']} for i in find]
         #翻转
         arr.reverse()
         return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': arr}))
@@ -114,9 +115,12 @@ class SubmitHandler(tornado.web.RequestHandler):
 
     def post(self):
         coll = self.application.db.demo
+        time_tuple = (datetime.datetime.now() + datetime.timedelta(hours=8)).timetuple()
+        pub_time = ('%s.%s.%s'%(time_tuple.tm_year, time_tuple.tm_mon, time_tuple.tm_mday))
         obj = {
             'name': self.get_argument("name", None),
-            'comment': self.get_argument("comment", None)
+            'comment': self.get_argument("comment", None),
+            'time': pub_time
         }
         coll.save(obj)
         return self.write(json.dumps({'code': 200, 'msg': 'ok'}))

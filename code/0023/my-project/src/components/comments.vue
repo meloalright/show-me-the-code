@@ -8,7 +8,7 @@
       <button class="input-submit" v-on:click="postComment()">发布</button>
     </div>
     <div class="list">
-      <h3 v-for="item in commentsList">{{ item.name }}:{{ item.comment }}</h3>
+      <h3 v-for="item in commentsList">{{ item.name }}:{{ item.comment }}({{ item.time }})</h3>
     </div>
     <!--天气-->
     <div class="weather">
@@ -30,7 +30,8 @@ export default {
       commentsList: [
         {
           'name': '正在',
-          'comment': '加载数据...'
+          'comment': '加载数据...',
+          'time': ' '
         }
       ],
       weather: {
@@ -88,7 +89,8 @@ export default {
       this.commentsList = [
         {
           'name': '正在',
-          'comment': '加载数据...'
+          'comment': '加载数据...',
+          'time': ' '
         }
       ]
     },
