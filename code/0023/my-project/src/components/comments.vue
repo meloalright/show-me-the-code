@@ -10,6 +10,11 @@
     <div class="list">
       <h3 v-for="item in commentsList">{{ item.name }}:{{ item.comment }}</h3>
     </div>
+    <!--天气-->
+    <div class="weather">
+      <small>{{ weather.city }} 空气指数: {{ weather.pm25 }}</small>
+    </div>
+    <!--天气-->
   </div>
 </template>
 
@@ -27,7 +32,11 @@ export default {
           'name': '正在',
           'comment': '加载数据...'
         }
-      ]
+      ],
+      weather: {
+        'city': '北京市',
+        'pm25': 'loading'
+      }
     }
   },
   methods: {
@@ -82,10 +91,21 @@ export default {
           'comment': '加载数据...'
         }
       ]
+    },
+    /*
+     @ 请求天气信息
+     **/
+    fetchWeather: function () {
+      fetch('http://localhost:8002/fetch-weather/').then((res) => {
+        return res.json()
+      }).then((data) => {
+        this.weather = data
+      })
     }
   },
   beforeMount: function () {
     this.fetchComments()
+    this.fetchWeather()
   }
 }
 </script>
@@ -145,5 +165,10 @@ a {
   cursor: pointer;
   background-color: rgb(53, 73, 94);
 }
-
+.weather {
+  position: fixed;
+  width: 200px;
+  right: 10px;
+  top: 10px;
+}
 </style>
