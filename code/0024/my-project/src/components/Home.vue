@@ -1,48 +1,32 @@
 <template>
-  <div class="hello">
-    <div class="input-line">
-      <input placeholder="请输入访问密码" type="password" class="input-cell" v-model="password"></input>
-    </div>
-    <div class="mt30">
-      <button class="btn-cell blue-btn" @click="login()">LOGIN</button>
-    </div>
+  <div class="home">
+    home
   </div>
 </template>
 
 <script>
 export default {
-  name: 'todo',
+  name: 'todo-home',
   data: () => {
     return {
-      'password': ''
     }
   },
   methods: {
     /**
+     @ 检测cokkie
      @
      @
-     @ 登录
-     @
-     @
-    **/
-    login: function() {
-      fetch('http://localhost:8002/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: encodeURI('password=' + this.password)
-      }).then((res) => {
-        return res.json();
+     **/
+    fetchData: function () {
+      fetch('http://localhost:8002/fetch/').then((res) => {
+        return res.json()
       }).then((data) => {
-        if (data.code === '200' || data.code === 200) {
-          location.href = '/#/home';
-        }
-        else {
-          this.password = '';
-        }
-      });
+        console.log(data);
+      })
     }
+  },
+  beforeMount: function () {
+    this.fetchData();
   }
 }
 </script>
