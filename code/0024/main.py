@@ -26,6 +26,7 @@ class Application(tornado.web.Application):
         (r"/login/", LoginHandler),
         (r"/clear/", ClearHandler),
         (r"/fetch/", FetchHandler),
+        (r"/update/", UpdateHandler),
         ]
         settings = dict(
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
@@ -38,7 +39,11 @@ class Application(tornado.web.Application):
         self.db = conn["demo"]
         tornado.web.Application.__init__(self, handlers, **settings)
 
+'''
+ @
+ @ index
 
+'''
 class MainHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -48,6 +53,15 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
+
+
+
+'''
+
+ @ 登录
+
+
+'''
 class LoginHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -60,15 +74,20 @@ class LoginHandler(tornado.web.RequestHandler):
 
         try: 
             if self.get_argument("password", None) == psw_obj['value']:
-                self.set_secure_cookie('sesscode',
-                        psw_obj['value'],
-                        expires_days=1)
+                self.set_secure_cookie('sessid', psw_obj['value'], expires_days=1)
                 return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
             else:
                 return self.write(json.dumps({'code': 1, 'msg': 'not valid'}))
         except:
             return self.write(json.dumps({'code': 2, 'msg': 'error'}))
 
+
+
+'''
+
+ @ 获取
+
+'''
 class FetchHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -76,21 +95,56 @@ class FetchHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def get(self):
+        '''
         coll = self.application.db.demo
         psw_obj = coll.find_one({'name': 'password'})
-        sesscode = self.get_secure_cookie('sesscode')
-        print('''''')
-        print(sesscode)
-        print('''''')
+        sessid = self.get_secure_cookie('sessid').decode()
         try: 
-            if sesscode == psw_obj['value']:
+            if sessid == psw_obj['value']:
                 return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': []}))
             else:
                 return self.write(json.dumps({'code': 1, 'msg': 'not valid'}))
         except:
             return self.write(json.dumps({'code': 2, 'msg': 'error'}))
+        '''
+        coll = self.application.db.demo
+        find = coll.find_one({'name': 'arr'})
+        arr = [i for i in find['value']]
+        #翻转
+        return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': arr}))
 
 
+
+
+'''
+
+ @ update
+
+
+'''
+class UpdateHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
+    def post(self):
+        coll = self.application.db.demo
+        find = coll.find_one({'name': 'arr'})
+        data = tornado.escape.json_decode(self.get_argument('arr'))
+        request_arr = data
+        find['value'] = request_arr
+        coll.save(find)
+        return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
+
+
+
+
+'''
+
+ @ 清空
+
+'''
 class ClearHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -104,6 +158,7 @@ class ClearHandler(tornado.web.RequestHandler):
          set admin password
         '''
         coll.save({'name': 'password' ,'value': 'admin'})
+        coll.save({'name': 'arr' ,'value': ['在这里创建你的TODO', '点击即可移除这条TODO']})
 
         return self.write(json.dumps({'code': 200, 'msg': 'cleared'}))
 

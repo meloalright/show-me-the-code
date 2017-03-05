@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <div class="input-line">
-      <input placeholder="请输入访问密码" type="password" class="input-cell" v-model="password"></input>
+      <input placeholder="请输入访问密码" type="password" class="input-cell" v-model="password" @click="pop()"></input>
     </div>
     <div class="mt30">
       <button class="btn-cell blue-btn" @click="login()">LOGIN</button>
