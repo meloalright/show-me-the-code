@@ -78,6 +78,7 @@ a {
   font-size: 12px;
   line-height: 22px;
   text-indent: 5px;
+  border: solid 1px #ccc;
 }
 
 
