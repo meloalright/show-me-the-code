@@ -129,7 +129,7 @@ class FetchHandler(tornado.web.RequestHandler):
             '''
              @ setting-cache
             '''
-            print('===setting-cache===')
+t            print('===setting-cache===')
             '''
              @ setting-cache
             '''
@@ -160,12 +160,12 @@ class UpdateHandler(tornado.web.RequestHandler):
         find['value'] = request_arr
         coll.save(find)
         '''
-         @ reseting-cache
+         @ resetting-cache
         '''
         mc.set('arr', data)
-        print('===reseting-cache===')
+        print('===resetting-cache===')
         '''
-         @ reseting-cache
+         @ resetting-cache
         '''
         return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
 
@@ -191,6 +191,8 @@ class ClearHandler(tornado.web.RequestHandler):
         '''
         coll.save({'name': 'password' ,'value': 'admin'})
         coll.save({'name': 'arr' ,'value': ['在这里创建你的TODO', '点击即可移除这条TODO']})
+
+        #clear cache
         mc.delete('arr')
 
         return self.write(json.dumps({'code': 200, 'msg': 'cleared'}))
