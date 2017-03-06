@@ -15,8 +15,13 @@ from tornado.options import define, options
 import json
 import pymongo
 
+import memcache
+
+#memcached
+
 define("port", default=8002, help="run on the given port", type=int)
 
+mc = memcache.Client(['127.0.0.1:11211'], debug=True)#init memcached client
 
 
 class Application(tornado.web.Application):
@@ -35,7 +40,8 @@ class Application(tornado.web.Application):
         cookie_secret='knomisnaowepcoii'
         )
 
-        conn = pymongo.MongoClient("localhost", 27017)
+        conn = pymongo.MongoClient("localhost", 27017)#init mongodb client
+
         self.db = conn["demo"]
         tornado.web.Application.__init__(self, handlers, **settings)
 
@@ -107,9 +113,27 @@ class FetchHandler(tornado.web.RequestHandler):
         except:
             return self.write(json.dumps({'code': 2, 'msg': 'error'}))
         '''
-        coll = self.application.db.demo
-        find = coll.find_one({'name': 'arr'})
-        arr = [i for i in find['value']]
+        if mc.get('arr') is not None:
+            '''
+             @ cached
+            '''
+            arr = mc.get('arr')
+            print('===cached===')
+            '''
+             @ cached
+            '''
+        else:
+            coll = self.application.db.demo
+            find = coll.find_one({'name': 'arr'})
+            arr = [i for i in find['value']]
+            '''
+             @ setting-cache
+            '''
+            print('===setting-cache===')
+            '''
+             @ setting-cache
+            '''
+            mc.set('arr', arr)
         #翻转
         return self.write(json.dumps({'code': 200, 'msg': 'ok', 'data': arr}))
 
@@ -135,6 +159,14 @@ class UpdateHandler(tornado.web.RequestHandler):
         request_arr = data
         find['value'] = request_arr
         coll.save(find)
+        '''
+         @ reseting-cache
+        '''
+        mc.set('arr', data)
+        print('===reseting-cache===')
+        '''
+         @ reseting-cache
+        '''
         return self.write(json.dumps({'code': 200, 'msg': 'ok'}))
 
 
@@ -159,6 +191,7 @@ class ClearHandler(tornado.web.RequestHandler):
         '''
         coll.save({'name': 'password' ,'value': 'admin'})
         coll.save({'name': 'arr' ,'value': ['在这里创建你的TODO', '点击即可移除这条TODO']})
+        mc.delete('arr')
 
         return self.write(json.dumps({'code': 200, 'msg': 'cleared'}))
 
