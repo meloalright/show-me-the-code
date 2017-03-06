@@ -1,4 +1,4 @@
-##0023-[vue]+[tornado]+[mongo]+[异步查询天气]实现留言板   
+##0023-[vue]+[tornado]+[mongo]+[yield异步查询天气]实现留言板   
    
 ```shell
 vue部分dev方法
