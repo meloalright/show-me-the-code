@@ -1,5 +1,5 @@
 #main.py
-import uuid
+#import uuid
 import random
 st= 'qwertyuiopasdfghjklzxcvbnm0123456789'
 arr = []
